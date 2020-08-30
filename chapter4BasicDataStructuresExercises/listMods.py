@@ -264,10 +264,61 @@ class OrderedList:
         return(current)
         self.length -= 1
 
-    
+class OrderedListWithInheritance(UnorderedList):
+    def __init__(self):
+        super(OrderedListWithInheritance, self).__init__()
+   
+
+    def add(self,item):
+        current = self.head
+        previous = None
+        stop = False
+
+        #modified to deal with duplicates by not adding them
+        #if self.search(item) == True:
+        #    return ""
+
+        while current != None and not stop:
+            if current.getData() > item:
+                stop = True
+            else:
+                previous = current
+                current = current.getNext()
+
+        temp = Node(item)
+        if previous == None:
+            temp.setNext(self.head)
+            self.head = temp
+        else:
+            temp.setNext(current)
+            previous.setNext(temp)
+        self.length += 1
+
+    def remove(self,item): # remove just removes 1 instance of a duplicate for now. to remove multiple
+        current = self.head
+        previous = None
+        found = False
+        while not found:
+            if current.getData() == item:
+                found = True
+                while current.getNext().getData() == item:
+                    current = current.getNext()
+                    self.length -= 1
+            else:
+                if current.getNext() == None:
+                    return "Item not in list"
+                previous = current
+                current = current.getNext()
+
+        if previous == None:
+
+            self.head = current.getNext()
+        else:
+            previous.setNext(current.getNext())
+        self.length -= 1
         
 
-mylist = OrderedList()
+mylist = OrderedListWithInheritance()
 
 mylist.add(31)
 mylist.add(31)
